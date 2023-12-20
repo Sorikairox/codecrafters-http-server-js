@@ -47,7 +47,7 @@ const server = net.createServer((socket) => {
       }
       writeBody(socket, stringToDisplay);
     } else if (command === 'files') {
-      if (command === 'GET') {
+      if (verb === 'GET') {
         const filename = pathFragments.join('/');
         try {
           const data = fs.readFileSync(directoryPath + '/' + filename);
