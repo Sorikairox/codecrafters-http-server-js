@@ -43,8 +43,6 @@ const server = net.createServer((socket) => {
       writeBody(socket, stringToDisplay);
     } else if (command === 'files') {
       const filename = pathFragments.join('/');
-      console.log(filename);
-      console.log(directoryPath + filename);
       try {
         const data = fs.readFileSync(directoryPath + '/' + filename);
         writeBody(socket, data, 'application/octet-stream');
