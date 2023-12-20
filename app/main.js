@@ -19,7 +19,7 @@ const server = net.createServer((socket) => {
       socket.write('Content-Type: text/plain\\r\\n\\r\\n');
       socket.write(`Content-Length: ${stringToDisplay.length}: text/plain\\r\\n\\r\\n`);
       socket.write('\\r\\n\\r\\n');
-      socket.write(`${stringToDisplay}\\\\r\\\\n\\\\r\\\\n'`);
+      socket.write(`${stringToDisplay}\\r\\n\\r\\n'`);
     }
     else
       socket.write('HTTP/1.1 404 Not Found\\r\\n\\r\\n');
