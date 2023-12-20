@@ -51,7 +51,7 @@ const server = net.createServer((socket) => {
         const filename = pathFragments.join('/');
         try {
           const data = fs.readFileSync(directoryPath + '/' + filename);
-          writeBody(socket, data);
+          writeBody(socket, data, { code: 200, contentType: 'application/octet-stream' });
         } catch (e) {
           socket.write('HTTP/1.1 404 Not Found\r\n');
           socket.write(`Content-Type: text/plain\r\n`);
