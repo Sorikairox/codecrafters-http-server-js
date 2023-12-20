@@ -10,15 +10,16 @@ const server = net.createServer((socket) => {
     const text = data.toString();
     const [info, ...others] = text.split('\n');
     const [verb, path, version] = info.split(' ');
-    const pathComponents = path.split('/');
+    const pathComponents = path.split('/').filter(s => s.length !== 0);
+    console.log(pathComponents);
     if (pathComponents.length === 0)
       socket.write('HTTP/1.1 200 OK\\r\\n\\r\\n');
-    else if (pathComponents[1] === 'echo') {
+    else if (pathComponents[0] === 'echo') {
       socket.write('HTTP/1.1 200 OK\\r\\n\\r\\n');
       socket.write('Content-Type: text/plain\\r\\n\\r\\n');
-      socket.write(`Content-Length: ${pathComponents[2].length}: text/plain\\r\\n\\r\\n`);
+      socket.write(`Content-Length: ${pathComponents[1].length}: text/plain\\r\\n\\r\\n`);
       socket.write('\\r\\n\\r\\n');
-      socket.write(`${pathComponents[3]}\\r\\n\\r\\n`);
+      socket.write(`${pathComponents[1]}\\r\\n\\r\\n`);
     }
     else
       socket.write('HTTP/1.1 404 Not Found\\r\\n\\r\\n');
