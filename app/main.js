@@ -47,11 +47,18 @@ const server = net.createServer((socket) => {
         const data = fs.readFileSync(directoryPath + '/' + filename);
         writeBody(socket, data, 'application/octet-stream');
       } catch (e) {
-        socket.write('HTTP/1.1 404 Not Found\r\n\r\n');
+        socket.write('HTTP/1.1 404 Not Found\r\n');
+        socket.write(`Content-Type: text/plain\r\n`);
+        socket.write(`Content-Length: 0\r\n`);
+        socket.write('\r\n');
       }
     }
-    else
-      socket.write('HTTP/1.1 404 Not Found\r\n\r\n');
+    else {
+      socket.write('HTTP/1.1 404 Not Found\r\n');
+      socket.write(`Content-Type: text/plain\r\n`);
+      socket.write(`Content-Length: 0\r\n`);
+      socket.write('\r\n');
+    }
   })
   socket.pipe(socket);
 });
