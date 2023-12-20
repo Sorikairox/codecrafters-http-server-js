@@ -17,7 +17,7 @@ const server = net.createServer((socket) => {
       const stringToDisplay = thingToDisplay.join('/');
       socket.write('HTTP/1.1 200 OK\\r\\n\\r\\n');
       socket.write('Content-Type: text/plain\\r\\n\\r\\n');
-      socket.write(`Content-Length: ${stringToDisplay.length}: text/plain\\r\\n\\r\\n`);
+      socket.write(`Content-Length: ${stringToDisplay.length}\\r\\n\\r\\n`);
       socket.write('\\r\\n\\r\\n');
       socket.write(`${stringToDisplay}\\r\\n\\r\\n'`);
     }
