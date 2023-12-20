@@ -12,17 +12,17 @@ const server = net.createServer((socket) => {
     const [verb, path, version] = info.split(' ');
     const [command, ...thingToDisplay] = path.split('/').filter(s => s.length !== 0);
     if (!command || command.length === 0)
-      socket.write('HTTP/1.1 200 OK\\r\\n\\r\\n');
+      socket.write('HTTP/1.1 200 OK\r\n');
     else if (command === 'echo') {
       const stringToDisplay = thingToDisplay.join('/');
-      socket.write('HTTP/1.1 200 OK\\r\\n\\r\\n');
-      socket.write('Content-Type: text/plain\\r\\n\\r\\n');
-      socket.write(`Content-Length: ${stringToDisplay.length}\\r\\n\\r\\n`);
-      socket.write('\\r\\n\\r\\n');
-      socket.write(`${stringToDisplay}\\r\\n\\r\\n'`);
+      socket.write('HTTP/1.1 200 OK\r\n');
+      socket.write('Content-Type: text/plain\r\n');
+      socket.write(`Content-Length: ${stringToDisplay.length}\r\n`);
+      socket.write('\r\n');
+      socket.write(`${stringToDisplay}'`);
     }
     else
-      socket.write('HTTP/1.1 404 Not Found\\r\\n\\r\\n');
+      socket.write('HTTP/1.1 404 Not Found\r\n');
   })
   socket.pipe(socket);
 });
