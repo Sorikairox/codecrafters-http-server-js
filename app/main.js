@@ -3,12 +3,14 @@ const fs = require("fs");
 
 const directoryPath = process.argv[3];
 
-function writeBody(socket, body, contentType = 'text/plain') {
-  socket.write('HTTP/1.1 200 OK\r\n');
-  socket.write(`Content-Type: ${contentType}\r\n`);
+function writeBody(socket, body, options = { code: 200, contentType: 'text/plain'}) {
+  socket.write(`HTTP/1.1 ${options.code} OK\r
+`);
+  socket.write(`Content-Type: ${options.contentType}\r\n`);
   socket.write(`Content-Length: ${body.length}\r\n`);
   socket.write('\r\n');
-  socket.write(`${body}`);
+  if (body.length > 0)
+    socket.write(`${body}`);
 }
 
 const server = net.createServer((socket) => {
@@ -45,15 +47,21 @@ const server = net.createServer((socket) => {
       }
       writeBody(socket, stringToDisplay);
     } else if (command === 'files') {
-      const filename = pathFragments.join('/');
-      try {
-        const data = fs.readFileSync(directoryPath + '/' + filename);
-        writeBody(socket, data, 'application/octet-stream');
-      } catch (e) {
-        socket.write('HTTP/1.1 404 Not Found\r\n');
-        socket.write(`Content-Type: text/plain\r\n`);
-        socket.write(`Content-Length: 0\r\n`);
-        socket.write('\r\n');
+      if (command === 'GET') {
+        const filename = pathFragments.join('/');
+        try {
+          const data = fs.readFileSync(directoryPath + '/' + filename);
+          writeBody(socket, data);
+        } catch (e) {
+          socket.write('HTTP/1.1 404 Not Found\r\n');
+          socket.write(`Content-Type: text/plain\r\n`);
+          socket.write(`Content-Length: 0\r\n`);
+          socket.write('\r\n');
+        }
+      } else {
+        const filename = pathFragments.join('/');
+        fs.writeFileSync(directoryPath + '/' + filename, body);
+        writeBody(socket, '', { code: 201, contentType: 'text/plain' });
       }
     }
     else {
