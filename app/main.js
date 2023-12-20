@@ -22,8 +22,11 @@ const server = net.createServer((socket) => {
   });
 
   socket.on('data', (data) => {
-    const text = data.toString();
-    const [info, ...headers] = text.split('\n');
+    const request = data.toString();
+    const splitRequest = request.split('\n');
+    const bodyStart = splitRequest.findIndex(s => s === '') + 1;
+    const [info, ...headers] = splitRequest.splice(0, bodyStart + 1);
+    const body = splitRequest.join('\n');
     const [verb, path, version] = info.split(' ');
     const [command, ...pathFragments] = path.split('/').filter(s => s.length !== 0);
     if (!command || command.length === 0)
