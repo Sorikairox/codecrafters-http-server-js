@@ -35,7 +35,7 @@ const server = net.createServer((socket) => {
         if (header.toLowerCase().startsWith('user-agent')) {
           const [_, ...values] = header.split(':');
           const value = values.join(':');
-          stringToDisplay += value;
+          stringToDisplay += value.trim();
         }
       }
       writeBody(socket, stringToDisplay);
