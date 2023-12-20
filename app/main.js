@@ -19,14 +19,14 @@ const server = net.createServer((socket) => {
       socket.write('HTTP/1.1 200 OK\r\n\r\n');
     else if (command === 'echo') {
       const stringToDisplay = thingToDisplay.join('/');
-      socket.write('HTTP/1.1 200 OK\r\n');
+      socket.write('HTTP/1.1 200 OK\r\n\r\n');
       socket.write('Content-Type: text/plain\r\n');
       socket.write(`Content-Length: ${stringToDisplay.length}\r\n`);
       socket.write('\r\n');
       socket.write(`${stringToDisplay}'`);
     }
     else
-      socket.write('HTTP/1.1 404 Not Found\r\n');
+      socket.write('HTTP/1.1 404 Not Found\r\n\r\n');
   })
   socket.pipe(socket);
 });
