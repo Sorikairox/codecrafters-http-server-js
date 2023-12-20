@@ -11,7 +11,7 @@ const server = net.createServer((socket) => {
     const [info, ...others] = text.split('\n');
     const [verb, path, version] = info.split(' ');
     const [command, ...thingToDisplay] = path.split('/').filter(s => s.length !== 0);
-    if (command.length === 0)
+    if (!command || command.length === 0)
       socket.write('HTTP/1.1 200 OK\\r\\n\\r\\n');
     else if (command === 'echo') {
       const stringToDisplay = thingToDisplay.join('/');
